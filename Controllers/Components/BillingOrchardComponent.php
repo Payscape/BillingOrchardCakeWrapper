@@ -250,9 +250,9 @@ class BillingOrchardComponent extends Component {
 		$required = array('ClientLogin', 'ClientPassword', 'Client', 'Email');
 		if(count(array_intersect_key(array_flip($required), $incoming)) === count($required)) {  
 			$data = array(); 
-			$data['ClientLogin'] = $incoming['ClientLogin'],
-			$data['ClientPassword'] = $incoming['ClientPassword'],
-			$data['Client'] = $incoming['Client'],
+			$data['ClientLogin'] = $incoming['ClientLogin'];
+			$data['ClientPassword'] = $incoming['ClientPassword'];
+			$data['Client'] = $incoming['Client'];
 			$data['Email'] = $incoming['Email'];
 			$data['Tel'] = (isset($incoming['Tel']) ? $incoming['Tel'] : '');
 			$data['Fax'] = (isset($incoming['Fax']) ? $incoming['Fax'] : '');
@@ -358,7 +358,7 @@ class BillingOrchardComponent extends Component {
 			$data['ClientID'] = $incoming['ClientID'];
 			$data['AmountPaid'] = $incoming['AmountPaid'];
 			$data['PaymentDate'] = $incoming['PaymentDate'];
-			$data['Notes'] = (isset($incoming['Notes']) ? $incoming['Notes'] : '')
+			$data['Notes'] = (isset($incoming['Notes']) ? $incoming['Notes'] : '');
 			$data['AmountPaidBalance'] = $incoming['AmountPaidBalance'];
 			$encoded = self::encode('AddPayments',$data);
 			return self::send($encoded);          
