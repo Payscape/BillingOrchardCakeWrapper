@@ -34,6 +34,7 @@ Allows for exchanges with all relevent database tables through Add, Edit, View, 
 All of the primary function for the BillingOrchard.com API are included in this wrapper. Full field definitions can be found at http://billingorchard.com/api_documentation.cfm. Field naming conventions and required fields are included inside each of the Add functions. All data is returned from BillingOrchard's API as a JSON string and is converted to an Array that can then be parsed by the controller. The following convention is universal to all available functions. 
 
 Example Add Client:
+```
 $client = array(
 	'ClientLogin' => 'ClientLoginName',
 	'ClientPassword' => 'Password',
@@ -41,8 +42,9 @@ $client = array(
 	'Email' => 'full@emailaddress.com'
 );
 $this->BillingOrchard->AddClients($client);
-
+```
 Example Edit Client:
+```
 $client = array(
 	'ClientID' => 7893 //Sample,
 	'Tel' => '777-777-7777',
@@ -52,9 +54,12 @@ $client = array(
 	'State' => 'GA'
 );
 $this->BillingOrchard->EditClients($client);
-
+```
 Example View Client:
+```
 $this->BillingOrchard->ViewClients(7893); //ID is optional
-
+```
 Example Delete Client:
+```
 $this->BillingOrchard->DeleteClients(7893); //ID is required
+```
