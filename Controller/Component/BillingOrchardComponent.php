@@ -1,24 +1,15 @@
 <?php
 class BillingOrchardComponent extends Component {
 
+	App::uses('HttpSocket', 'Network/Http');
 	const apikey 	= 'ApiKey';					//Api Key available from your BillingOrchard.com Account
 	const key 		= 'BillingOrchard2012';
 	const url 		= 'https://billingorchardapi.com/webservice/ChooseService.php';
 	const userid 	= 12345; 					//Replace with your UserID from BillingOrchard.com 
 
 	private function send($data){
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, self::url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-		$output = curl_exec($ch);
-		curl_close($ch);
+		$HttpSocket = new HttpSocket();
+		$output = $HttpSocket->post(self::url, $data);
 		return json_decode($output, true);
 	}
 
@@ -37,92 +28,52 @@ class BillingOrchardComponent extends Component {
 	//
 
 	public function ViewUsers($incoming=null){
-		$data = array();
-		if($incoming != ''){
-			$data['UserID'] = $incoming;
-		}
-		$encoded = self::encode('ViewUsers',$data);
+		$encoded = self::encode('ViewUsers',$incoming);
 		return self::send($encoded);  
 	}
 
 	public function ViewClients($incoming=null){
-		$data = array();
-		if($incoming != ''){
-			$data['ClientID'] = $incoming;
-		}
-		$encoded = self::encode('ViewClients',$data);
+		$encoded = self::encode('ViewClients',$incoming);
 		return self::send($encoded);  
 	}
 
 	public function ViewHourlyServices($incoming=null){
-		$data = array();
-		if($incoming != ''){
-			$data['ItemID'] = $incoming;
-		}
-		$encoded = self::encode('ViewHourlyServices',$data);
+		$encoded = self::encode('ViewHourlyServices',$incoming);
 		return self::send($encoded);  
 	}
 
 	public function ViewInvoices($incoming=null){
-		$data = array();
-		if($incoming != ''){
-			$data['Invoice'] = $incoming;
-		}
-		$encoded = self::encode('ViewInvoices',$data);
+		$encoded = self::encode('ViewInvoices',$incoming);
 		return self::send($encoded);  
 	}
 
 	public function ViewPayments($incoming=null){
-		$data = array();
-		if($incoming != ''){
-			$data['PaymentID'] = $incoming;
-		}
-		$encoded = self::encode('ViewPayments',$data);
+		$encoded = self::encode('ViewPayments',$incoming);
 		return self::send($encoded);  
 	}
 
 	public function ViewBilledMisc($incoming=null){
-		$data = array();
-		if($incoming != ''){
-			$data['BMID'] = $incoming;
-		}
-		$encoded = self::encode('ViewBilledMisc',$data);
+		$encoded = self::encode('ViewBilledMisc',$incoming);
 		return self::send($encoded);  
 	}
 
 	public function ViewMiscItems($incoming=null){
-		$data = array();
-		if($incoming != ''){
-			$data['MiscID'] = $incoming;
-		}
-		$encoded = self::encode('ViewMiscItems',$data);
+		$encoded = self::encode('ViewMiscItems',$incoming);
 		return self::send($encoded);  
 	}
 
 	public function ViewBilledHourly($incoming=null){
-		$data = array();
-		if($incoming != ''){
-			$data['BHID'] = $incoming;
-		}
-		$encoded = self::encode('ViewBilledHourly',$data);
+		$encoded = self::encode('ViewBilledHourly',$incoming);
 		return self::send($encoded);  
 	}
 
 	public function ViewSubscribers($incoming=null){
-		$data = array();
-		if($incoming != ''){
-			$data['CID'] = $incoming;
-		}
-		$encoded = self::encode('ViewSubscribers',$data);
+		$encoded = self::encode('ViewSubscribers',$incoming);
 		return self::send($encoded);  
 	}
 
 	public function ViewRecurringBilling($incoming=null){
-		$data = array();
-		if($incoming != ''){
-			$data['RBID'] = $incoming;
-		}
-		$encoded = self::encode('ViewRecurringBilling',$data);
+		$encoded = self::encode('ViewRecurringBilling',$incoming);
 		return self::send($encoded);  
 	}
 
@@ -140,7 +91,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('UpdateClients',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 	
@@ -154,7 +107,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('UpdateHourlyServices',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 	
@@ -168,7 +123,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('UpdateInvoices',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 	
@@ -182,7 +139,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('UpdateBilledMisc',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 	
@@ -196,7 +155,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('UpdateMiscItems',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 	
@@ -210,7 +171,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('UpdateBilledHourly',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 	
@@ -224,7 +187,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('UpdateSubscribers',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 	
@@ -238,7 +203,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('UpdateRecurringBilling',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
@@ -305,7 +272,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('AddClients',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
@@ -320,7 +289,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('AddHourlyServices',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
@@ -346,7 +317,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('AddInvoices',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
@@ -363,7 +336,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('AddPayments',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
@@ -385,7 +360,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('AddBilledMisc',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
@@ -400,7 +377,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('AddMiscItems',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
@@ -422,7 +401,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('AddBilledHourly',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
@@ -442,7 +423,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('AddSubscribers',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
@@ -465,7 +448,9 @@ class BillingOrchardComponent extends Component {
 			$encoded = self::encode('AddRecurringBilling',$data);
 			return self::send($encoded);          
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
@@ -475,71 +460,78 @@ class BillingOrchardComponent extends Component {
 
 	public function DeleteClients($incoming=null){
 		if($incoming != ''){
-			$data['ClientID'] = $incoming;
-			$encoded = self::encode('DeleteClients',$data);
+			$encoded = self::encode('DeleteClients',$incoming);
 			return self::send($encoded); 
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
 	public function DeleteHourlyServices($incoming=null){
 		if($incoming != ''){
-			$data['ItemID'] = $incoming;
-			$encoded = self::encode('DeleteHourlyServices',$data);
+			$encoded = self::encode('DeleteHourlyServices',$incoming);
 			return self::send($encoded); 
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
 	public function DeleteInvoices($incoming=null){
 		if($incoming != ''){
-			$data['Invoice'] = $incoming;
-			$encoded = self::encode('DeleteInvoices',$data);
+			$encoded = self::encode('DeleteInvoices',$incoming);
 			return self::send($encoded); 
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
 	public function DeleteBilledMisc($incoming=null){
 		if($incoming != ''){
-			$data['BMID'] = $incoming;
-			$encoded = self::encode('DeleteBilledMisc',$data);
+			$encoded = self::encode('DeleteBilledMisc',$incoming);
 			return self::send($encoded); 
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
 	public function DeleteMiscItems($incoming=null){
 		if($incoming != ''){
-			$data['MiscID'] = $incoming;
-			$encoded = self::encode('DeleteMiscItems',$data);
+			$encoded = self::encode('DeleteMiscItems',$incoming);
 			return self::send($encoded); 
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
 	public function DeleteBilledHourly($incoming=null){
 		if($incoming != ''){
-			$data['BHID'] = $incoming;
-			$encoded = self::encode('DeleteBilledHourly',$data);
+			$encoded = self::encode('DeleteBilledHourly',$incoming);
 			return self::send($encoded); 
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 
 	public function DeleteRecurringBilling($incoming=null){
 		if($incoming != ''){
-			$data['RBID'] = $incoming;
-			$encoded = self::encode('DeleteRecurringBilling',$data);
+			$encoded = self::encode('DeleteRecurringBilling',$incoming);
 			return self::send($encoded); 
 		} else {
-			return 'Missing Required Values';
+		    $response['Message'] = 'Missing Required Values';
+		    $response['error'] = 1;
+			return $response;
 		}
 	}
 }
